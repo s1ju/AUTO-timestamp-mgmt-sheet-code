@@ -1,0 +1,44 @@
+
+function onEdit(e) {
+  if (!e) throw "Creator Siju NOV 16 2022";
+    createChecks(e);
+    checkedDate(e);
+}
+
+const TABSIN = ['Summary']; // Put your sheet names in here
+
+function createChecks(e) {
+  const src = e.source.getActiveSheet();
+  const r = e.range;
+  if (r.rowStart < 3 || r.columnStart !== 3 || TABSIN.indexOf(src.getName()) === -1) return;
+  {
+    src.getRange(e.range.getRow(),1).insertCheckboxes();
+    src.getRange(e.range.getRow(),2).insertCheckboxes();
+  }
+}
+
+function checkedDate(e) {
+  const src = e.source.getActiveSheet();
+  const r = e.range;
+  const date = new Date();
+  if (r.rowStart > 2 && r.columnStart === 1 && TABSIN.indexOf(src.getName()) !== -1)
+  if (e.value == "TRUE"){
+    r.offset(0,1).setValue('FALSE')
+    r.offset(0,2).setValue(date).setNumberFormat("MM/dd");
+    r.offset(0,3).setValue(date).setNumberFormat("h:mm am/pm");
+  }else{
+    r.offset(0,2).clearContent();
+    r.offset(0,3).clearContent();
+  }
+  if (r.rowStart > 2 && r.columnStart === 2 && TABSIN.indexOf(src.getName()) !== -1)
+  if (e.value == "TRUE"){
+    r.offset(0,-1).setValue('FALSE')
+    r.offset(0,1).setValue(date).setNumberFormat("MM/dd");
+    r.offset(0,2).setValue(date).setNumberFormat("h:mm am/pm");
+  }else{
+    r.offset(0,1).clearContent();
+    r.offset(0,2).clearContent();
+  }
+}
+
+
